@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>顶顶屋</title>
+  
+  <subtitle>顶顶屋</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://weblackone.github.io/"/>
+  <updated>2019-09-08T07:59:51.307Z</updated>
+  <id>https://weblackone.github.io/</id>
+  
+  <author>
+    <name>jaycekoba</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>模板模式进行cbs.deal到ebs数据迁移的总结和应用</title>
+    <link href="https://weblackone.github.io/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/"/>
+    <id>https://weblackone.github.io/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/</id>
+    <published>2018-07-16T01:25:00.000Z</published>
+    <updated>2019-09-08T07:59:51.307Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;一-模板模式进行cbs-deal到ebs数据迁移的总结和应用&quot;&gt;&lt;a href=&quot;#一-模板模式进行cbs-deal到ebs数据迁移的总结和应用&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="工作" scheme="https://weblackone.github.io/categories/%E5%B7%A5%E4%BD%9C/"/>
+    
+    
+      <category term="工作总结" scheme="https://weblackone.github.io/tags/%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/"/>
+    
+      <category term="模板模式" scheme="https://weblackone.github.io/tags/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+</feed>
