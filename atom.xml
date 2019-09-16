@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://weblackone.github.io/"/>
-  <updated>2019-09-08T07:59:51.307Z</updated>
+  <updated>2019-09-16T05:25:00.329Z</updated>
   <id>https://weblackone.github.io/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>对抗虚无，活出生命的意义</title>
+    <link href="https://weblackone.github.io/2019/09/13/dui-kang-xu-wu-huo-chu-sheng-ming-de-yi-yi/"/>
+    <id>https://weblackone.github.io/2019/09/13/dui-kang-xu-wu-huo-chu-sheng-ming-de-yi-yi/</id>
+    <published>2019-09-13T10:55:00.000Z</published>
+    <updated>2019-09-16T05:25:00.329Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;对抗虚无，活出生命的意义&quot;&gt;&lt;a href=&quot;#对抗虚无，活出生命的意义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="阅读" scheme="https://weblackone.github.io/categories/%E9%98%85%E8%AF%BB/"/>
+    
+    
+      <category term="阅读" scheme="https://weblackone.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    
+      <category term="心理学" scheme="https://weblackone.github.io/tags/%E5%BF%83%E7%90%86%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>模板模式进行cbs.deal到ebs数据迁移的总结和应用</title>
     <link href="https://weblackone.github.io/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/"/>
     <id>https://weblackone.github.io/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/</id>
     <published>2018-07-16T01:25:00.000Z</published>
-    <updated>2019-09-08T07:59:51.307Z</updated>
+    <updated>2019-09-09T11:10:40.312Z</updated>
     
     <summary type="html">
     

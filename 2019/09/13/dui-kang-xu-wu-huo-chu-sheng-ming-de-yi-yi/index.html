@@ -4,9 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="模板模式进行cbs.deal到ebs数据迁移的总结和应用, 顶顶屋">
-    <meta name="description" content="一.模板模式进行cbs.deal到ebs数据迁移的总结和应用1.预热部分1.1.简单粗暴理解一下模板模式
-有一些操作，他们的流程都是固定的，就那么几步，我们把固定的流程提取出来，做成一个模板，之后的具体到某个操作，直需要在流程中丰富这个操作">
+    <meta name="keywords" content="对抗虚无，活出生命的意义, 顶顶屋">
+    <meta name="description" content="对抗虚无，活出生命的意义记得很小的时候，我就有了死亡的意识，这一生活不过几十年，而死亡以后就是几万年几亿年我都不会再复活。每每想到要死的那个时候，就像曹植讲的那样”来日大难，口燥唇干”，是种绝望的窒息感。。
+因为受不了这种窒息感，我把生活计">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>模板模式进行cbs.deal到ebs数据迁移的总结和应用 | 顶顶屋</title>
+    <title>对抗虚无，活出生命的意义 | 顶顶屋</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -283,13 +283,13 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        模板模式进行cbs.deal到ebs数据迁移的总结和应用
+                        对抗虚无，活出生命的意义
                     </div>
                 </div>
             </div>
@@ -311,12 +311,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/工作总结/" target="_blank">
-                                <span class="chip bg-color">工作总结</span>
+                            <a href="/tags/阅读/" target="_blank">
+                                <span class="chip bg-color">阅读</span>
                             </a>
                         
-                            <a href="/tags/模板模式/" target="_blank">
-                                <span class="chip bg-color">模板模式</span>
+                            <a href="/tags/心理学/" target="_blank">
+                                <span class="chip bg-color">心理学</span>
                             </a>
                         
                     </div>
@@ -327,8 +327,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/工作/" class="post-category" target="_blank">
-                                工作
+                            <a href="/categories/阅读/" class="post-category" target="_blank">
+                                阅读
                             </a>
                         
                     </div>
@@ -339,7 +339,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2018-07-16
+                    2019-09-13
                 </div>
 
                 
@@ -355,189 +355,85 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一-模板模式进行cbs-deal到ebs数据迁移的总结和应用"><a href="#一-模板模式进行cbs-deal到ebs数据迁移的总结和应用" class="headerlink" title="一.模板模式进行cbs.deal到ebs数据迁移的总结和应用"></a>一.模板模式进行<code>cbs.deal</code>到<code>ebs</code>数据迁移的总结和应用</h3><h3 id="1-预热部分"><a href="#1-预热部分" class="headerlink" title="1.预热部分"></a>1.预热部分</h3><h4 id="1-1-简单粗暴理解一下模板模式"><a href="#1-1-简单粗暴理解一下模板模式" class="headerlink" title="1.1.简单粗暴理解一下模板模式"></a>1.1.简单粗暴理解一下模板模式</h4><blockquote>
-<p>有一些操作，他们的流程都是固定的，就那么几步，我们把固定的流程提取出来，做成一个模板，之后的具体到某个操作，直需要在流程中丰富这个操作的细节即可。</p>
-</blockquote>
-<h4 id="1-2-举个例子："><a href="#1-2-举个例子：" class="headerlink" title="1.2.举个例子："></a>1.2.举个例子：</h4><p>比方我们平时炒菜就那么几步：1.起锅烧油—&gt;&gt;&gt;2.放菜3.炒—&gt;&gt;&gt;4.出锅装盘</p>
-<p>把这个流程提起成一个模板，</p>
-<p>如果我们要抄青菜，在步骤2中就放入青菜，出锅的就是炒青菜</p>
-<p>如果要炒土豆丝，就在步骤2中放入土豆丝，出锅的就是炒土豆丝</p>
-<h4 id="1-3-一个不知名的小demo"><a href="#1-3-一个不知名的小demo" class="headerlink" title="1.3.一个不知名的小demo"></a>1.3.一个不知名的小demo</h4><h5 id="1-3-1-确认流程"><a href="#1-3-1-确认流程" class="headerlink" title="1.3.1.确认流程"></a>1.3.1.确认流程</h5><pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> 炒菜模板_baseHandler  <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">//定义流程步骤</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 炒菜流程<span class="token function">_handle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-           <span class="token comment" spellcheck="true">// 1</span>
-            起锅烧油<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//2</span>
-            放菜<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//3</span>
-            炒<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//4</span>
-            出锅装盘<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 起锅烧油<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"起锅烧油操作-->>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">//需要子类重写具体实现</span>
-    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> 放菜<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 炒<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"炒菜时间到-->>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 出锅装盘<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"出锅装盘!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
-<h5 id="1-3-2-一个具体的实现"><a href="#1-3-2-一个具体的实现" class="headerlink" title="1.3.2.一个具体的实现"></a>1.3.2.一个具体的实现</h5><pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> 炒土豆丝_土豆丝Handler <span class="token keyword">extends</span> 炒菜模板_baseHandler<span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 放菜<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"放入土豆丝"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li><p>什么情况下可以应用模板模式：</p>
+                <h1 id="对抗虚无，活出生命的意义"><a href="#对抗虚无，活出生命的意义" class="headerlink" title="对抗虚无，活出生命的意义"></a>对抗虚无，活出生命的意义</h1><p>记得很小的时候，我就有了死亡的意识，这一生活不过几十年，而死亡以后就是几万年几亿年我都不会再复活。每每想到要死的那个时候，就像曹植讲的那样”来日大难，口燥唇干”，是种绝望的窒息感。。</p>
+<p>因为受不了这种窒息感，我把生活计划的满满当当，不想虚度任何一天，可是现实总是会打破计划，有计划的时候我知道要干嘛，没有计划的时候我该做些什么才是有意义的？况且我计划的就是有意义的吗？</p>
 <ul>
-<li>1.有固定的流程</li>
+<li>我认真跟进工作，跟进项目，最后项目上线，却反响平平，问题众多，到今天为止去年做的大型项目也没有什么好的起色，那我过去的一年都干了些什么？它的意义何在？</li>
+<li>我规划着我的生活，也是常常出现失控的状态，常常也是一团糟？我生活的意义何在？我规划的意义又何在？</li>
+<li>压抑的时候想出去走走，去旅游散散心，回来以后心里也没有什么实质性的变化，还是那种压抑的状态，驱散不去。</li>
+<li>想放松的时候，玩玩游戏，刷刷抖音，结果却并没有让我放松下来，反而变的更焦虑，更空虚。。</li>
 </ul>
-</li>
-<li><p>模板模式的实践流程：</p>
+<p>很多时候我也在问自己：我是太着急了吗？太想要一个结果？还是太浮躁，沉不下心来？还是没有找到重心，没有找到生活的意义，没有一个肯定的答案？那人生的意义到底何在？</p>
+<p>今年上半年，偶然拜读了稻盛和夫先生的《活法》，算是找到了一个最好的答案：</p>
+<p>人生的意义就是：<strong>提升心性，磨砺灵魂！</strong></p>
+<p>按我个人的理解就是活的点有温度，要坚定自己的追求。</p>
+<p>今天拜读弗兰克尔先生的《活出生命的意义》也从另一个方面佐证了这个观点。</p>
+<p>在《活出生命的意义》中提到三种不同的方式来发现生命的意义。</p>
 <ul>
-<li><p>1.要做个什么事儿？（要炒菜）</p>
+<li><ol>
+<li><strong>通过创立某项工作或者从事某种事业。</strong></li>
+</ol>
 </li>
-<li><p>2.要怎么做？（炒菜的流程）</p>
+<li><ol start="2">
+<li><strong>通过体验某种事情或者某个人。</strong></li>
+</ol>
 </li>
-<li><p>3.具体要做个什么事情？（要炒土豆丝）</p>
+<li><ol start="3">
+<li><strong>在忍受不可避免的苦难是采取某种态度。</strong></li>
+</ol>
 </li>
 </ul>
-</li>
-</ul>
-<h3 id="2-重头戏"><a href="#2-重头戏" class="headerlink" title="2.重头戏"></a>2.重头戏</h3><p>下面就按<code>1</code>的总结流程3步骤来实现我们这次cbs-&gt;ebs数据迁移的工作。</p>
-<h4 id="2-1-要做个什么事儿？"><a href="#2-1-要做个什么事儿？" class="headerlink" title="2.1.要做个什么事儿？"></a>2.1.要做个什么事儿？</h4><blockquote>
-<p>把<code>cbs.deal</code>库中写好的视图提取出的数据导入到业财的<code>ebs</code>库中。</p>
+<h3 id="一-通过创立某项工作或者从事某种事业。-关注事业和个人发展"><a href="#一-通过创立某项工作或者从事某种事业。-关注事业和个人发展" class="headerlink" title="一.通过创立某项工作或者从事某种事业。(关注事业和个人发展)"></a>一.通过创立某项工作或者从事某种事业。(关注事业和个人发展)</h3><p>这个观点在稻盛和夫先生的《干法》有更好的阐述【TODO】。我总想把生活和工作分隔开，工作是工作，生活是生活，这也是新时代新青年的追求。可事实在中国这个高速大发展，加班文化盛行的时期，工作没有办法和生活分隔开，还有一些极端的时候，是工作完全占据了生活，在北京还哪里有什么生活也是常事儿。或许：<strong>好好工作就是最好的生活！也是生活中一个很重要的意义。</strong>不然我们一天大部分时间给了工作，换取那么一点报酬，精明的算，怎么算也是不划算的事情。</p>
+<p>我有一直有一个很变态的观点就是：<strong>工作上要付出比别人多十倍的努力，爱好上要比别人付出多三倍的努力。</strong></p>
+<p>它不是说别人工作8小时，我要工作到深夜，它更多是一种不随便，对自己负责的态度吧（《活出生命的意义-存在之本质》有更深入的阐述），工作上会常常遇到同事负能量的情绪：给我这么一点工资，让我干那么重的活儿，有多少工资干多少活儿，钱不到位活儿就不到位；这新领导真SB，我要是领导一定比他做的好，某某同事也是个智障，MD。工作上也会遇到费力不讨好最后还背黑锅，努力工作没有回报的时候。<strong>工作上要付出比别人多十倍的努力</strong>，就是当遇到最难最累的时候再坚持一下，再挺一下，不要放弃。工作是个对个人的投资。</p>
+<h3 id="二-通过体验某种事情或者某个人。"><a href="#二-通过体验某种事情或者某个人。" class="headerlink" title="二.通过体验某种事情或者某个人。"></a>二.<strong>通过体验某种事情或者某个人。</strong></h3><p>《圣经》对爱的诠释：<strong>爱是恒久忍耐，又有恩慈，爱是不嫉妒、不自夸、不张狂，爱是凡事包容、凡事相信，凡事盼望、凡事忍耐，爱是永不止息</strong>。</p>
+<p>越长久越厌恶，可能就不是爱吧，按《活出生命的意义-爱之意义》讲:</p>
+<blockquote>
+<p>只有深爱才能了解一个人的本质。通过爱，才能看到所爱的人的本质特征，甚至能够看到他潜在的东西即他应当实现而未实现的全部潜能，只有通过爱，才能使所爱的人实现他的全部潜能。</p>
 </blockquote>
-<p><img src="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/1562120772663.png" alt="1562120772663"></p>
-<p>看起来有点太简单粗暴，就好像占山为王的老土匪（ebs）直接把村长的女儿抢到手（cbs.deal.视图），有点无耻。</p>
-<p>更妥当的做法应该是娶的时候和老村长提个亲（把主表的状态更新为syncing），告诉村长我要娶了。最好是合法一下，到民政局去登记（记录在批量表），这么重要的日子也应该纪念一下（记录在日志表），最后事情的结果怎么样，也应该告知一声老村长，顺风顺水，完美成功（就把主表的状态更新为synced），如果是婚检检出了遗传病，这事儿就凉了（把主表的状态更新为error），下面我们对迁移步骤做一次升级处理：</p>
-<p><img src="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/1562122104301.png" alt="1562122104301"></p>
-<p>升级处理以后我们的流程也基本确定下来了。</p>
-<h3 id="2-要怎么做？"><a href="#2-要怎么做？" class="headerlink" title="2.要怎么做？"></a>2.要怎么做？</h3><h5 id="2-1-迁移数据的流程："><a href="#2-1-迁移数据的流程：" class="headerlink" title="2.1.迁移数据的流程："></a>2.1.迁移数据的流程：</h5><ol>
-<li>获取相应的视图数据</li>
-<li>ebs批表插入数据</li>
-<li>更新原始主表的同步状态（syncing）</li>
-<li>传输数据到ebs数据表中<ol>
-<li>传输成功<ol>
-<li>更新主表的同步状态（synced）</li>
-</ol>
-</li>
-<li>传输失败<ol>
-<li>更新主表的同步状态（error）</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>记录日志</li>
-</ol>
-<h3 id="3-具体要做个什么事情？"><a href="#3-具体要做个什么事情？" class="headerlink" title="3.具体要做个什么事情？"></a>3.具体要做个什么事情？</h3><blockquote>
-<p>到某一件具体的事情就是实例化的过程。实现的过程就是把流程中不能确定的信息（抽象概括的信息）确认下来的过程</p>
+<p>爱可能就是彼此成长，彼此成就的过程，慢慢来体会生命的意义吧。</p>
+<h3 id="三-在忍受不可避免的苦难是采取某种态度。"><a href="#三-在忍受不可避免的苦难是采取某种态度。" class="headerlink" title="三.在忍受不可避免的苦难是采取某种态度。"></a>三.在忍受不可避免的苦难是采取某种态度。</h3><blockquote>
+<p>知道为什么而活的人，便能生存。——尼采。</p>
 </blockquote>
-<h4 id="举例：要迁移合同信息的数据"><a href="#举例：要迁移合同信息的数据" class="headerlink" title="举例：要迁移合同信息的数据"></a>举例：要迁移合同信息的数据</h4><p>流程中不能确定的信息有那些：</p>
-<p><strong>1.获取相应的视图数据</strong></p>
-<p>​    1.我们确认下来获取合同的视图是 <code>ebs_ar_contract</code></p>
-<p><strong>2.需要更新的主表不确定</strong></p>
-<p>​    1.我们要确认下来合同视图的主表是哪一个<code>ebs_ar_contract</code>视图对应的主表是  <code>deal.cr_case_info</code></p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th align="left">视图名</th>
-<th>视图注解</th>
-<th>库表名</th>
-<th>表注释</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>01</td>
-<td align="left">ebs_ar_contract</td>
-<td>合同信息</td>
-<td><strong>deal.cr_case_info</strong></td>
-<td>案件信息</td>
-<td></td>
-</tr>
-<tr>
-<td>02</td>
-<td align="left">ebs_ar_receipts_receipt</td>
-<td>收款信息</td>
-<td><strong>deal.fin_receipt</strong></td>
-<td>实收明细</td>
-<td></td>
-</tr>
-<tr>
-<td>03</td>
-<td align="left">ebs_ar_receipts_statement</td>
-<td>收款信<strong>息</strong></td>
-<td><strong>deal.fin_receipt_statement</strong></td>
-<td>实收流水</td>
-<td></td>
-</tr>
-<tr>
-<td>04</td>
-<td align="left">ebs_ar_refund_espense</td>
-<td>退款信息</td>
-<td><strong>deal.fin_refund</strong></td>
-<td>退款</td>
-<td>待确认</td>
-</tr>
-<tr>
-<td>05</td>
-<td align="left">ebs_ar_refund_statement</td>
-<td>退款信息</td>
-<td><strong>deal.fin_refund_statement</strong></td>
-<td>退款</td>
-<td></td>
-</tr>
-<tr>
-<td>06</td>
-<td align="left">ebs_ar_revenue_invoice</td>
-<td>收入信息</td>
-<td><strong>deal.fin_recv_invoice_info</strong></td>
-<td>开票信息</td>
-<td></td>
-</tr>
-<tr>
-<td>07</td>
-<td align="left">ebs_ar_revenue_receive</td>
-<td>收入信息</td>
-<td><strong>deal.cr_receivable</strong></td>
-<td>应收明细</td>
-<td></td>
-</tr>
-<tr>
-<td>08</td>
-<td align="left">ebs_gl_payment_expense</td>
-<td>业务付款</td>
-<td><strong>deal.fin_payment</strong></td>
-<td>付款</td>
-<td></td>
-</tr>
-<tr>
-<td>09</td>
-<td align="left">ebs_gl_payment_payment</td>
-<td>业务付款</td>
-<td><strong>deal.fin_payment_statement</strong></td>
-<td>付款明细</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>3.迁移到业财ebs的表中不确定</p>
-<p>​    1.确定业财的合同表 CUX_EBS_AR_CONTRACT_IFACE</p>
-<p><strong>到代码中就是确定：</strong></p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">BaseHandler</span><span class="token operator">&lt;</span>D <span class="token keyword">extends</span> <span class="token class-name">BaseDealEntity</span><span class="token punctuation">,</span> E <span class="token keyword">extends</span> <span class="token class-name">BaseEbsEntity</span><span class="token punctuation">,</span>R <span class="token keyword">extends</span> <span class="token class-name">BaseCbsEntity</span><span class="token operator">></span> </code></pre>
-<p>1.<strong>BaseDealEntity</strong> 获取视图实体 eg：子类&gt; 合同：<code>EbsArContractEntity</code></p>
-<p>2.<strong>BaseEbsEntity</strong>  业财ebs表的实体 eg: 子类&gt;合同：<code>CuxEbsArContractIfaceEntity</code></p>
-<p>3.<strong>BaseCbsEntity</strong> 需要更新的主表实体  子类&gt;合同：<code>CrCaseInfo</code></p>
-<h4 id="需要留意的几个地方："><a href="#需要留意的几个地方：" class="headerlink" title="需要留意的几个地方："></a>需要留意的几个地方：</h4><p>1.视图必须带有主表的id（sync_id）,用于之后的主表状态更新</p>
-<p>2.多数据源，不是service实现类中，最好不要写lambda表达式，可能会识别不出来具体到哪一个库。</p>
-<p>WUCf7MGyZiD3l1XMaY</p>
+<p>一个很大的前提：</p>
+<blockquote>
+<p>无论如何，遭受痛苦不是寻找意义的必要方式。</p>
+</blockquote>
+<p>记得初中的化学老师和我们讲：人要享的起福，也要受得起罪。</p>
+<p>但是受罪不是享福的前提，不是说为了享福就去找罪受。</p>
+<blockquote>
+<p>假如痛苦是可以避免的，那么有意义的事情就是去消除痛苦的根源，不论这种原因是心理的，生理的或政治的。</p>
+<p>遭受不必要的痛苦与其说是英雄行为，不如说是自虐。</p>
+</blockquote>
+<h4 id="在苦难中的心理三个阶段（结合作者在奥斯维辛集中营生存体会总结而得"><a href="#在苦难中的心理三个阶段（结合作者在奥斯维辛集中营生存体会总结而得" class="headerlink" title="在苦难中的心理三个阶段（结合作者在奥斯维辛集中营生存体会总结而得)"></a>在苦难中的心理三个阶段（结合作者在奥斯维辛集中营生存体会总结而得)</h4><h5 id="3-1-第一阶段：否定了自己的前半生"><a href="#3-1-第一阶段：否定了自己的前半生" class="headerlink" title="3.1.第一阶段：否定了自己的前半生"></a>3.1.第一阶段：否定了自己的前半生</h5><p>遇到不好的事情的时候，否定过去是心理的第一个阶段。</p>
+<p>觉得过去的一切都没有意义了，尤其是在失恋的时候尤为明显。</p>
+<p><strong>那我们在否定过去的这个阶段该怎么做：</strong></p>
+<p>书里写的很笼统，没有什么实质性的意见。</p>
+<p>是不是可以用《终生成长》提到的成长型思维方式来看待这个问题，当下经历的一切都是一个阶段。是阶段就会变化，像股票，有牛市有熊市一样，好运气会耗尽，坏运气也一样不会长居。</p>
+<p>再用《认知红利》提到的方式去客观理性的分析当下的利弊，人是一种看不见自己特性的动物，只有碰到点什么才会有感知的机会，碰壁的时候也是最能看清自己的时候，好好总结一番过去，分析一下自己差劲儿的地方，给之后修一个好的根基。</p>
+<h5 id="3-2-第二阶段：冷漠，迟钝，对任何事情都漠不关心。"><a href="#3-2-第二阶段：冷漠，迟钝，对任何事情都漠不关心。" class="headerlink" title="3.2.第二阶段：冷漠，迟钝，对任何事情都漠不关心。"></a>3.2.第二阶段：冷漠，迟钝，对任何事情都漠不关心。</h5><p>这是冷漠的外壳，为的是保护自己。</p>
+<p>有丰富精神生活的且比较敏感的人会承受更多的痛苦（会放大，会渲染痛苦吧）</p>
+<p>这也就可以理解为什么越是外表强硬高冷的人，内心越温柔，可能出于过去的经历，有了自己的保护壳。</p>
+<p><strong>这个时候我们该怎么做？</strong></p>
+<p><strong>逆天而行！</strong>或许是个好办法。越是挣扎越要抱紧。</p>
+<p>我承受的一切不想再让任何人经历一遍。越是沉默，越是迟钝的时候越要积极，越要关心身边的人。</p>
+<p>相反的嘛，越是热闹，也是噪杂的时候，也是警惕，越要冷静。</p>
+<h5 id="3-3-第三阶段：苦难过后"><a href="#3-3-第三阶段：苦难过后" class="headerlink" title="3.3.第三阶段：苦难过后"></a>3.3.第三阶段：苦难过后</h5><ol>
+<li><p>丧失了感受快乐的能力，情绪出问题了。</p>
+</li>
+<li><p>容易成为一个报复者。报复社会，一次来平衡之前遭受的苦难。</p>
+</li>
+<li><p>原来的生活没有了，理想的情景幻灭。这种落差接受不了。那些可以给予走过苦难的力量没有了。</p>
+</li>
+</ol>
+<blockquote>
+<p>[解放以后，囚犯们回归了正常的生活]他发现，梦想成真时，一切并非如他所愿！当他踏上电车，奔赴多年来魂牵梦绕的家乡，正如多少次梦见的那样，摁响了故居的门铃，却发现那个该开门的人没有出现，而且永远不会出现！</p>
+</blockquote>
+<p><em>这是个需要疗伤的过程了吧</em></p>
+<h3 id="后记："><a href="#后记：" class="headerlink" title="后记："></a>后记：</h3><p>《活出生命的意义》是回老家过中秋的这一天一口气读完。《活出生命的意义》是一本的心理学书，一般心理学书是列举大量的案例进行心理学分析，最后给出妥当的治疗方案。弗兰克尔重点放在了未来，给患者生存下去的勇气，活出生命的意义。</p>
+<p>这种意义不是弗洛伊德强调的快乐原则（追求快乐），也不是阿德勒心理学派的”追求权力“或者”追求优越“，这种意义可能是稻盛和夫对待工作的态度，可能是杨绛和钱钟书先生一生的相濡以沫，这种意义可能就是作者弗兰克尔对待奥斯维辛集中营生存下来种种积极体会。如果现在问我生命的意义何在，它可能就是一个初始化的函数<code>Person aPerson = new Person()</code>,没有任何的意义，赋变量什么样的值就是一个什么样的人，事业赋个递增的值，敢情赋个专一的值，面对糟糕的事情，挺过去，赋个正值，它就变的有了意义。</p>
+<p>读这本书给我收获就是：在将来的某一天，当我颓丧的讲这工作有什么意义，活着有什么意义的时候，多想想身边的关心我的人，在意我的人，把眼前的事情做好；当我和将来的另一半有三观冲突的时候，不会粗暴的讲出你做这些有什么用，你这不是浪费时间？可以出于爱出于理解，要不你试试？我永远支持你；当我遇到坎坷的时候，硬着头皮熬过去，任何不能杀死我的，都会使我更强大！</p>
+<p>​                                                                                                                                                                                            ————记于2019年13日 中秋节</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -696,7 +592,7 @@
                     </span>
                     <a href="https://weblackone.github.io" class="b-link-green">顶顶屋</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/" class="b-link-green">模板模式进行cbs.deal到ebs数据迁移的总结和应用</a>
+                    <a href="/2019/09/13/dui-kang-xu-wu-huo-chu-sheng-ming-de-yi-yi/" class="b-link-green">对抗虚无，活出生命的意义</a>
                 </p>
             </div>
         </div>
@@ -717,9 +613,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2019/09/13/dui-kang-xu-wu-huo-chu-sheng-ming-de-yi-yi/">
                     <div class="card-image">
@@ -734,9 +631,9 @@
                     <div class="summary">对抗虚无，活出生命的意义记得很小的时候，我就有了死亡的意识，这一生活不过几十年，而死亡以后就是几万年几亿年我都不会再复活。每每想到要死的那个时候，就像曹植讲的那样”来日大难，口燥唇干”，是种绝望的窒息感。。
 因为受不了这种窒息感，我把生活计</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-13
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-13
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -749,6 +646,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -768,7 +666,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="fa fa-dot-circle-o"></i>
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/">
@@ -799,7 +697,6 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
