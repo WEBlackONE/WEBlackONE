@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://weblackone.github.io/"/>
-  <updated>2019-09-16T05:25:00.329Z</updated>
+  <updated>2019-09-21T02:33:29.298Z</updated>
   <id>https://weblackone.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://weblackone.github.io/2019/09/13/dui-kang-xu-wu-huo-chu-sheng-ming-de-yi-yi/"/>
     <id>https://weblackone.github.io/2019/09/13/dui-kang-xu-wu-huo-chu-sheng-ming-de-yi-yi/</id>
     <published>2019-09-13T10:55:00.000Z</published>
-    <updated>2019-09-16T05:25:00.329Z</updated>
+    <updated>2019-09-21T02:33:29.298Z</updated>
     
     <summary type="html">
     
@@ -46,11 +46,170 @@
   </entry>
   
   <entry>
+    <title>02.垃圾收集器与内存分配策略（GC）</title>
+    <link href="https://weblackone.github.io/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/"/>
+    <id>https://weblackone.github.io/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/</id>
+    <published>2018-09-13T10:55:00.000Z</published>
+    <updated>2019-09-21T02:28:38.314Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;02-垃圾收集器与内存分配策略（GC）&quot;&gt;&lt;a href=&quot;#02-垃圾收集器与内存分配策略（GC）&quot; class=&quot;headerlink&quot; title=&quot;02.垃圾收集器与内存分配策略（GC）&quot;&gt;&lt;/a&gt;02.垃圾收集器与内存分配策略（GC）&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="https://weblackone.github.io/categories/java/"/>
+    
+    
+      <category term="GC" scheme="https://weblackone.github.io/tags/GC/"/>
+    
+      <category term="JVM" scheme="https://weblackone.github.io/tags/JVM/"/>
+    
+      <category term="性能调优" scheme="https://weblackone.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>03.理解GC日志</title>
+    <link href="https://weblackone.github.io/2018/09/13/03.li-jie-gc-ri-zhi/"/>
+    <id>https://weblackone.github.io/2018/09/13/03.li-jie-gc-ri-zhi/</id>
+    <published>2018-09-13T10:55:00.000Z</published>
+    <updated>2019-09-21T02:41:56.520Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img src=&quot;/2018/09/13/03.li-jie-gc-ri-zhi/1569033672704.png&quot; alt=&quot;1569033672704&quot;&gt;&lt;/p&gt;
+&lt;script&gt;
+       
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="https://weblackone.github.io/categories/java/"/>
+    
+    
+      <category term="GC" scheme="https://weblackone.github.io/tags/GC/"/>
+    
+      <category term="JVM" scheme="https://weblackone.github.io/tags/JVM/"/>
+    
+      <category term="性能调优" scheme="https://weblackone.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>05.虚拟机性能监控与与故障处理工具</title>
+    <link href="https://weblackone.github.io/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/"/>
+    <id>https://weblackone.github.io/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/</id>
+    <published>2018-09-13T10:55:00.000Z</published>
+    <updated>2019-09-21T02:40:11.800Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;05-虚拟机性能监控与与故障处理工具&quot;&gt;&lt;a href=&quot;#05-虚拟机性能监控与与故障处理工具&quot; class=&quot;headerlink&quot; title=&quot;05.虚拟机性能监控与与故障处理工具&quot;&gt;&lt;/a&gt;05.虚拟机性能监控与与故障处理工具&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="https://weblackone.github.io/categories/java/"/>
+    
+    
+      <category term="GC" scheme="https://weblackone.github.io/tags/GC/"/>
+    
+      <category term="JVM" scheme="https://weblackone.github.io/tags/JVM/"/>
+    
+      <category term="性能调优" scheme="https://weblackone.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>1.(总结)垃圾收集器与内存分配策略（GC）</title>
+    <link href="https://weblackone.github.io/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/"/>
+    <id>https://weblackone.github.io/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/</id>
+    <published>2018-09-13T10:55:00.000Z</published>
+    <updated>2019-09-21T02:43:17.478Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img src=&quot;/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/1569033753442.png&quot; alt=&quot;1569033753442&quot;&gt;&lt;/p&gt;
+&lt;script&gt;
+    
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java" scheme="https://weblackone.github.io/categories/java/"/>
+    
+    
+      <category term="GC" scheme="https://weblackone.github.io/tags/GC/"/>
+    
+      <category term="JVM" scheme="https://weblackone.github.io/tags/JVM/"/>
+    
+      <category term="性能调优" scheme="https://weblackone.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>tomcat调优</title>
+    <link href="https://weblackone.github.io/2018/09/13/tomcat-diao-you/"/>
+    <id>https://weblackone.github.io/2018/09/13/tomcat-diao-you/</id>
+    <published>2018-09-13T10:55:00.000Z</published>
+    <updated>2019-09-21T05:57:30.114Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;1-Tomcat配置调优&quot;&gt;&lt;a href=&quot;#1-Tomcat配置调优&quot; class=&quot;headerlink&quot; title=&quot;1.Tomcat配置调优&quot;&gt;&lt;/a&gt;1.Tomcat配置调优&lt;/h1&gt;&lt;h2 id=&quot;1-1-减少配置优化&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="服务器" scheme="https://weblackone.github.io/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="性能调优" scheme="https://weblackone.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    
+      <category term="服务器" scheme="https://weblackone.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+      <category term="tomcat" scheme="https://weblackone.github.io/tags/tomcat/"/>
+    
+  </entry>
+  
+  <entry>
     <title>模板模式进行cbs.deal到ebs数据迁移的总结和应用</title>
     <link href="https://weblackone.github.io/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/"/>
     <id>https://weblackone.github.io/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/</id>
     <published>2018-07-16T01:25:00.000Z</published>
-    <updated>2019-09-09T11:10:40.312Z</updated>
+    <updated>2019-09-21T02:33:49.061Z</updated>
     
     <summary type="html">
     

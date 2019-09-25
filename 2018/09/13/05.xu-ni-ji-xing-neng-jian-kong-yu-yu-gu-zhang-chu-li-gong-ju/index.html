@@ -4,9 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="模板模式进行cbs.deal到ebs数据迁移的总结和应用, 顶顶屋">
-    <meta name="description" content="一.模板模式进行cbs.deal到ebs数据迁移的总结和应用1.预热部分1.1.简单粗暴理解一下模板模式
-有一些操作，他们的流程都是固定的，就那么几步，我们把固定的流程提取出来，做成一个模板，之后的具体到某个操作，直需要在流程中丰富这个操作">
+    <meta name="keywords" content="05.虚拟机性能监控与与故障处理工具, 顶顶屋">
+    <meta name="description" content="05.虚拟机性能监控与与故障处理工具一.jps——查看JVM进程的工具
+jps -l[app_user_5i5j@nh-nbdir02 ~]$ jps -l19719 org.apache.catalina.startup.Bootstra">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +14,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>模板模式进行cbs.deal到ebs数据迁移的总结和应用 | 顶顶屋</title>
+    <title>05.虚拟机性能监控与与故障处理工具 | 顶顶屋</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -283,13 +283,13 @@
 
 
 
-<div class="bg-cover post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        模板模式进行cbs.deal到ebs数据迁移的总结和应用
+                        05.虚拟机性能监控与与故障处理工具
                     </div>
                 </div>
             </div>
@@ -381,12 +381,16 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/工作总结/" target="_blank">
-                                <span class="chip bg-color">工作总结</span>
+                            <a href="/tags/GC/" target="_blank">
+                                <span class="chip bg-color">GC</span>
                             </a>
                         
-                            <a href="/tags/模板模式/" target="_blank">
-                                <span class="chip bg-color">模板模式</span>
+                            <a href="/tags/JVM/" target="_blank">
+                                <span class="chip bg-color">JVM</span>
+                            </a>
+                        
+                            <a href="/tags/性能调优/" target="_blank">
+                                <span class="chip bg-color">性能调优</span>
                             </a>
                         
                     </div>
@@ -397,8 +401,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/工作/" class="post-category" target="_blank">
-                                工作
+                            <a href="/categories/java/" class="post-category" target="_blank">
+                                java
                             </a>
                         
                     </div>
@@ -409,7 +413,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2018-07-16
+                    2018-09-13
                 </div>
 
                 
@@ -425,190 +429,41 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="一-模板模式进行cbs-deal到ebs数据迁移的总结和应用"><a href="#一-模板模式进行cbs-deal到ebs数据迁移的总结和应用" class="headerlink" title="一.模板模式进行cbs.deal到ebs数据迁移的总结和应用"></a>一.模板模式进行<code>cbs.deal</code>到<code>ebs</code>数据迁移的总结和应用</h3><h3 id="1-预热部分"><a href="#1-预热部分" class="headerlink" title="1.预热部分"></a>1.预热部分</h3><h4 id="1-1-简单粗暴理解一下模板模式"><a href="#1-1-简单粗暴理解一下模板模式" class="headerlink" title="1.1.简单粗暴理解一下模板模式"></a>1.1.简单粗暴理解一下模板模式</h4><blockquote>
-<p>有一些操作，他们的流程都是固定的，就那么几步，我们把固定的流程提取出来，做成一个模板，之后的具体到某个操作，直需要在流程中丰富这个操作的细节即可。</p>
-</blockquote>
-<h4 id="1-2-举个例子："><a href="#1-2-举个例子：" class="headerlink" title="1.2.举个例子："></a>1.2.举个例子：</h4><p>比方我们平时炒菜就那么几步：1.起锅烧油—&gt;&gt;&gt;2.放菜3.炒—&gt;&gt;&gt;4.出锅装盘</p>
-<p>把这个流程提起成一个模板，</p>
-<p>如果我们要抄青菜，在步骤2中就放入青菜，出锅的就是炒青菜</p>
-<p>如果要炒土豆丝，就在步骤2中放入土豆丝，出锅的就是炒土豆丝</p>
-<h4 id="1-3-一个不知名的小demo"><a href="#1-3-一个不知名的小demo" class="headerlink" title="1.3.一个不知名的小demo"></a>1.3.一个不知名的小demo</h4><h5 id="1-3-1-确认流程"><a href="#1-3-1-确认流程" class="headerlink" title="1.3.1.确认流程"></a>1.3.1.确认流程</h5><pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> 炒菜模板_baseHandler  <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">//定义流程步骤</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 炒菜流程<span class="token function">_handle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-           <span class="token comment" spellcheck="true">// 1</span>
-            起锅烧油<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//2</span>
-            放菜<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//3</span>
-            炒<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">//4</span>
-            出锅装盘<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 起锅烧油<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"起锅烧油操作-->>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">//需要子类重写具体实现</span>
-    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> 放菜<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 炒<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"炒菜时间到-->>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 出锅装盘<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"出锅装盘!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
-<h5 id="1-3-2-一个具体的实现"><a href="#1-3-2-一个具体的实现" class="headerlink" title="1.3.2.一个具体的实现"></a>1.3.2.一个具体的实现</h5><pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> 炒土豆丝_土豆丝Handler <span class="token keyword">extends</span> 炒菜模板_baseHandler<span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> 放菜<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"放入土豆丝"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></code></pre>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li><p>什么情况下可以应用模板模式：</p>
+                <h1 id="05-虚拟机性能监控与与故障处理工具"><a href="#05-虚拟机性能监控与与故障处理工具" class="headerlink" title="05.虚拟机性能监控与与故障处理工具"></a>05.虚拟机性能监控与与故障处理工具</h1><h2 id="一-jps——查看JVM进程的工具"><a href="#一-jps——查看JVM进程的工具" class="headerlink" title="一.jps——查看JVM进程的工具"></a><strong>一.jps——查看JVM进程的工具</strong></h2><ul>
+<li><p><strong>jps -l</strong><br>[app_user_5i5j@nh-nbdir02 ~]$ jps -l19719 org.apache.catalina.startup.Bootstrap31528 sun.tools.jps.Jps5403 com.wiwj.cbs.nbdir.server.Startup</p>
+</li>
+<li><p><strong>jps -v</strong></p>
+<p>[app_user_5i5j@nh-nbdir02 ~]$ jps -v31491 Jps -Dapplication.home=/usr/java/jdk1.8.0_144 -Xms8m19719 Bootstrap -Djava.util.logging.config.file=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Xms2048m -Xmx4096m -Xss2048K -XX:-UseGCOverheadLimit -Denv=PRO -Dapollo.cluster=default -Djdk.tls.ephemeralDHKeySize=2048 -Dignore.endorsed.dirs= -Dcatalina.base=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080 -Dcatalina.home=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080 -Djava.io.tmpdir=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080/temp5403 Startup -Xms256m -Xmx256m -XX:MaxPermSize=128m -Djava.net.preferIPv4Stack=true -Ddubbo.registry.file=/home/app_user_5i5j/.dubbo/dubbo-registry-nbdir.cache -Denv=PRO -Dapollo.cluster=default</p>
 <ul>
-<li>1.有固定的流程</li>
-</ul>
-</li>
-<li><p>模板模式的实践流程：</p>
-<ul>
-<li><p>1.要做个什么事儿？（要炒菜）</p>
-</li>
-<li><p>2.要怎么做？（炒菜的流程）</p>
-</li>
-<li><p>3.具体要做个什么事情？（要炒土豆丝）</p>
-</li>
+<li><strong>输出虚拟机进程启动时JVM参数</strong></li>
 </ul>
 </li>
 </ul>
-<h3 id="2-重头戏"><a href="#2-重头戏" class="headerlink" title="2.重头戏"></a>2.重头戏</h3><p>下面就按<code>1</code>的总结流程3步骤来实现我们这次cbs-&gt;ebs数据迁移的工作。</p>
-<h4 id="2-1-要做个什么事儿？"><a href="#2-1-要做个什么事儿？" class="headerlink" title="2.1.要做个什么事儿？"></a>2.1.要做个什么事儿？</h4><blockquote>
-<p>把<code>cbs.deal</code>库中写好的视图提取出的数据导入到业财的<code>ebs</code>库中。</p>
-</blockquote>
-<p><img src="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/1562120772663.png" alt="1562120772663"></p>
-<p>看起来有点太简单粗暴，就好像占山为王的老土匪（ebs）直接把村长的女儿抢到手（cbs.deal.视图），有点无耻。</p>
-<p>更妥当的做法应该是娶的时候和老村长提个亲（把主表的状态更新为syncing），告诉村长我要娶了。最好是合法一下，到民政局去登记（记录在批量表），这么重要的日子也应该纪念一下（记录在日志表），最后事情的结果怎么样，也应该告知一声老村长，顺风顺水，完美成功（就把主表的状态更新为synced），如果是婚检检出了遗传病，这事儿就凉了（把主表的状态更新为error），下面我们对迁移步骤做一次升级处理：</p>
-<p><img src="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/1562122104301.png" alt="1562122104301"></p>
-<p>升级处理以后我们的流程也基本确定下来了。</p>
-<h3 id="2-要怎么做？"><a href="#2-要怎么做？" class="headerlink" title="2.要怎么做？"></a>2.要怎么做？</h3><h5 id="2-1-迁移数据的流程："><a href="#2-1-迁移数据的流程：" class="headerlink" title="2.1.迁移数据的流程："></a>2.1.迁移数据的流程：</h5><ol>
-<li>获取相应的视图数据</li>
-<li>ebs批表插入数据</li>
-<li>更新原始主表的同步状态（syncing）</li>
-<li>传输数据到ebs数据表中<ol>
-<li>传输成功<ol>
-<li>更新主表的同步状态（synced）</li>
-</ol>
+<h2 id="二-jstat——统计信息的监视工具"><a href="#二-jstat——统计信息的监视工具" class="headerlink" title="二.jstat——统计信息的监视工具"></a><strong>二.jstat——统计信息的监视工具</strong></h2><ul>
+<li><p>jstat -class</p>
+<p><img src="/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/9cb9c538-aceb-4437-80f7-ac9682081eaa-746748.jpg" alt="img"></p>
+<p>[app_user_5i5j@nh-nbdir02 ~]$ jstat -class 5403Loaded  Bytes  Unloaded  Bytes     Time    12387 22847.2      461   704.7       7.48</p>
 </li>
-<li>传输失败<ol>
-<li>更新主表的同步状态（error）</li>
-</ol>
+<li><p>jstat-gc</p>
 </li>
-</ol>
+<li><p>…..</p>
 </li>
-<li>记录日志</li>
-</ol>
-<h3 id="3-具体要做个什么事情？"><a href="#3-具体要做个什么事情？" class="headerlink" title="3.具体要做个什么事情？"></a>3.具体要做个什么事情？</h3><blockquote>
-<p>到某一件具体的事情就是实例化的过程。实现的过程就是把流程中不能确定的信息（抽象概括的信息）确认下来的过程</p>
-</blockquote>
-<h4 id="举例：要迁移合同信息的数据"><a href="#举例：要迁移合同信息的数据" class="headerlink" title="举例：要迁移合同信息的数据"></a>举例：要迁移合同信息的数据</h4><p>流程中不能确定的信息有那些：</p>
-<p><strong>1.获取相应的视图数据</strong></p>
-<p>​    1.我们确认下来获取合同的视图是 <code>ebs_ar_contract</code></p>
-<p><strong>2.需要更新的主表不确定</strong></p>
-<p>​    1.我们要确认下来合同视图的主表是哪一个<code>ebs_ar_contract</code>视图对应的主表是  <code>deal.cr_case_info</code></p>
-<table>
-<thead>
-<tr>
-<th>序号</th>
-<th align="left">视图名</th>
-<th>视图注解</th>
-<th>库表名</th>
-<th>表注释</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>01</td>
-<td align="left">ebs_ar_contract</td>
-<td>合同信息</td>
-<td><strong>deal.cr_case_info</strong></td>
-<td>案件信息</td>
-<td></td>
-</tr>
-<tr>
-<td>02</td>
-<td align="left">ebs_ar_receipts_receipt</td>
-<td>收款信息</td>
-<td><strong>deal.fin_receipt</strong></td>
-<td>实收明细</td>
-<td></td>
-</tr>
-<tr>
-<td>03</td>
-<td align="left">ebs_ar_receipts_statement</td>
-<td>收款信<strong>息</strong></td>
-<td><strong>deal.fin_receipt_statement</strong></td>
-<td>实收流水</td>
-<td></td>
-</tr>
-<tr>
-<td>04</td>
-<td align="left">ebs_ar_refund_espense</td>
-<td>退款信息</td>
-<td><strong>deal.fin_refund</strong></td>
-<td>退款</td>
-<td>待确认</td>
-</tr>
-<tr>
-<td>05</td>
-<td align="left">ebs_ar_refund_statement</td>
-<td>退款信息</td>
-<td><strong>deal.fin_refund_statement</strong></td>
-<td>退款</td>
-<td></td>
-</tr>
-<tr>
-<td>06</td>
-<td align="left">ebs_ar_revenue_invoice</td>
-<td>收入信息</td>
-<td><strong>deal.fin_recv_invoice_info</strong></td>
-<td>开票信息</td>
-<td></td>
-</tr>
-<tr>
-<td>07</td>
-<td align="left">ebs_ar_revenue_receive</td>
-<td>收入信息</td>
-<td><strong>deal.cr_receivable</strong></td>
-<td>应收明细</td>
-<td></td>
-</tr>
-<tr>
-<td>08</td>
-<td align="left">ebs_gl_payment_expense</td>
-<td>业务付款</td>
-<td><strong>deal.fin_payment</strong></td>
-<td>付款</td>
-<td></td>
-</tr>
-<tr>
-<td>09</td>
-<td align="left">ebs_gl_payment_payment</td>
-<td>业务付款</td>
-<td><strong>deal.fin_payment_statement</strong></td>
-<td>付款明细</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>3.迁移到业财ebs的表中不确定</p>
-<p>​    1.确定业财的合同表 CUX_EBS_AR_CONTRACT_IFACE</p>
-<p><strong>到代码中就是确定：</strong></p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">BaseHandler</span><span class="token operator">&lt;</span>D <span class="token keyword">extends</span> <span class="token class-name">BaseDealEntity</span><span class="token punctuation">,</span> E <span class="token keyword">extends</span> <span class="token class-name">BaseEbsEntity</span><span class="token punctuation">,</span>R <span class="token keyword">extends</span> <span class="token class-name">BaseCbsEntity</span><span class="token operator">></span> </code></pre>
-<p>1.<strong>BaseDealEntity</strong> 获取视图实体 eg：子类&gt; 合同：<code>EbsArContractEntity</code></p>
-<p>2.<strong>BaseEbsEntity</strong>  业财ebs表的实体 eg: 子类&gt;合同：<code>CuxEbsArContractIfaceEntity</code></p>
-<p>3.<strong>BaseCbsEntity</strong> 需要更新的主表实体  子类&gt;合同：<code>CrCaseInfo</code></p>
-<h4 id="需要留意的几个地方："><a href="#需要留意的几个地方：" class="headerlink" title="需要留意的几个地方："></a>需要留意的几个地方：</h4><p>1.视图必须带有主表的id（sync_id）,用于之后的主表状态更新</p>
-<p>2.多数据源，不是service实现类中，最好不要写lambda表达式，可能会识别不出来具体到哪一个库。</p>
-<p>WUCf7MGyZiD3l1XMaY</p>
-<script>
+</ul>
+<h2 id="三-jinfo——查看配置信息"><a href="#三-jinfo——查看配置信息" class="headerlink" title="三.jinfo——查看配置信息"></a><strong>三.jinfo——查看配置信息</strong></h2><ul>
+<li>jinfo {-flag} pid</li>
+</ul>
+<h2 id="四-jmap——获取内存映像工具"><a href="#四-jmap——获取内存映像工具" class="headerlink" title="四.jmap——获取内存映像工具"></a><strong>四.jmap——获取内存映像工具</strong></h2><ul>
+<li>jmap（Memory Map for Java）命令用于生成堆转储快照（一般称为heapdump或<strong>dump</strong>文件）。</li>
+<li>jmap的作用并不仅仅是为了获取dump文件，它还可以查询<strong>finalize执行队列</strong>、<strong>Java堆</strong>和<strong>永久代</strong>的详细信息，如空间使用率、当前用的是哪种收集器等。</li>
+</ul>
+<h2 id="五-jhat——分析jmap生成dump文件（很少用）"><a href="#五-jhat——分析jmap生成dump文件（很少用）" class="headerlink" title="五.jhat——分析jmap生成dump文件（很少用）"></a><strong>五.jhat——分析jmap生成dump文件（很少用）</strong></h2><h2 id="六-jstack——堆栈跟踪工具"><a href="#六-jstack——堆栈跟踪工具" class="headerlink" title="六.jstack——堆栈跟踪工具"></a><strong>六.jstack——堆栈跟踪工具</strong></h2><ul>
+<li>jstack（Stack Trace for Java）命令用于生成虚拟机<strong>当前</strong>时刻的<strong>线程快照</strong>。</li>
+<li>用途：定位线程出现<strong>长时间停顿的原因</strong>，如<strong>线程间死锁</strong>、<strong>死循环</strong>、<strong>请求外部资源</strong>导致的长时间等待等都是导致线程长时间停顿的常见原因。</li>
+</ul>
+<h2 id="七-HSDIS：JIT生成代码反汇编"><a href="#七-HSDIS：JIT生成代码反汇编" class="headerlink" title="七.HSDIS：JIT生成代码反汇编"></a><strong>七.HSDIS：JIT生成代码反汇编</strong></h2><ul>
+<li>HSDIS是一个Sun官方推荐的HotSpot虚拟机JIT编译代码的反汇编插件，它包含在HotSpot虚拟机的源码之中，但没有提供编译后的程序。在Project Kenai的网站[1]也可以下载到单独的源码。它的作用是让HotSpot的-XX：+PrintAssembly指令调用它来把动态生成的本地代码还原为汇编代码输出，同时还生成了大量非常有价值的注释，这样我们就可以通过输出的代码来分析问题。</li>
+</ul>
+<h2 id="八-可视化工具-JConsole"><a href="#八-可视化工具-JConsole" class="headerlink" title="八.可视化工具-JConsole"></a><strong>八.可视化工具-JConsole</strong></h2><h2 id="九-可视化工具-JVisualVM"><a href="#九-可视化工具-JVisualVM" class="headerlink" title="九.可视化工具-JVisualVM"></a><strong>九.可视化工具-JVisualVM</strong></h2><script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -766,7 +621,7 @@
                     </span>
                     <a href="https://weblackone.github.io" class="b-link-green">顶顶屋</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/" class="b-link-green">模板模式进行cbs.deal到ebs数据迁移的总结和应用</a>
+                    <a href="/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/" class="b-link-green">05.虚拟机性能监控与与故障处理工具</a>
                 </p>
             </div>
         </div>
@@ -791,24 +646,21 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2018/09/13/tomcat-diao-you/">
+                <a href="/2018/09/13/03.li-jie-gc-ri-zhi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="tomcat调优">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="03.理解GC日志">
                         
-                        <span class="card-title">tomcat调优</span>
+                        <span class="card-title">03.理解GC日志</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">1.Tomcat配置调优1.1.减少配置优化
-不需要静态资源的情况
+                    <div class="summary">
 
-案例1：REST应用（微服务）—&gt;&gt;对应相应的Servlet
-
-分析：不需要静态资源，Tomcat容器–&gt;&gt;静态和动态
-
-1.静态处理：Defau</div>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { retur</div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="fa fa-clock-o fa-fw icon-date"></i>2018-09-13
@@ -817,8 +669,8 @@
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/服务器/" class="post-category" target="_blank">
-                                    服务器
+                            <a href="/categories/java/" class="post-category" target="_blank">
+                                    java
                                 </a>
                             
                             
@@ -828,16 +680,16 @@
                 
                 <div class="card-action article-tags">
                     
+                    <a href="/tags/GC/" target="_blank">
+                        <span class="chip bg-color">GC</span>
+                    </a>
+                    
+                    <a href="/tags/JVM/" target="_blank">
+                        <span class="chip bg-color">JVM</span>
+                    </a>
+                    
                     <a href="/tags/性能调优/" target="_blank">
                         <span class="chip bg-color">性能调优</span>
-                    </a>
-                    
-                    <a href="/tags/服务器/" target="_blank">
-                        <span class="chip bg-color">服务器</span>
-                    </a>
-                    
-                    <a href="/tags/tomcat/" target="_blank">
-                        <span class="chip bg-color">tomcat</span>
                     </a>
                     
                 </div>
@@ -848,47 +700,53 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="fa fa-dot-circle-o"></i>
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/">
+                <a href="/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="模板模式进行cbs.deal到ebs数据迁移的总结和应用">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="1.(总结)垃圾收集器与内存分配策略（GC）">
                         
-                        <span class="card-title">模板模式进行cbs.deal到ebs数据迁移的总结和应用</span>
+                        <span class="card-title">1.(总结)垃圾收集器与内存分配策略（GC）</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">一.模板模式进行cbs.deal到ebs数据迁移的总结和应用1.预热部分1.1.简单粗暴理解一下模板模式
-有一些操作，他们的流程都是固定的，就那么几步，我们把固定的流程提取出来，做成一个模板，之后的具体到某个操作，直需要在流程中丰富这个操作</div>
+                    <div class="summary">
+
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { retur</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-16
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-09-13
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/工作/" class="post-category" target="_blank">
-                                    工作
+                            <a href="/categories/java/" class="post-category" target="_blank">
+                                    java
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/工作总结/" target="_blank">
-                        <span class="chip bg-color">工作总结</span>
+                    <a href="/tags/GC/" target="_blank">
+                        <span class="chip bg-color">GC</span>
                     </a>
                     
-                    <a href="/tags/模板模式/" target="_blank">
-                        <span class="chip bg-color">模板模式</span>
+                    <a href="/tags/JVM/" target="_blank">
+                        <span class="chip bg-color">JVM</span>
+                    </a>
+                    
+                    <a href="/tags/性能调优/" target="_blank">
+                        <span class="chip bg-color">性能调优</span>
                     </a>
                     
                 </div>

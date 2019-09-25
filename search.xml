@@ -31,6 +31,151 @@
     
     
     <entry>
+      <title>02.垃圾收集器与内存分配策略（GC）</title>
+      <link href="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/"/>
+      <url>/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/</url>
+      
+        <content type="html"><![CDATA[<h1 id="02-垃圾收集器与内存分配策略（GC）"><a href="#02-垃圾收集器与内存分配策略（GC）" class="headerlink" title="02.垃圾收集器与内存分配策略（GC）"></a>02.垃圾收集器与内存分配策略（GC）</h1><h2 id="GC要解决的3个问题："><a href="#GC要解决的3个问题：" class="headerlink" title="GC要解决的3个问题："></a><strong>GC要解决的3个问题：</strong></h2><h3 id="一-哪些内存需要回收？"><a href="#一-哪些内存需要回收？" class="headerlink" title="一.哪些内存需要回收？"></a>一.哪些内存需要回收？</h3><h4 id="1-1-引用计数法："><a href="#1-1-引用计数法：" class="headerlink" title="1.1.引用计数法："></a><strong>1.1.引用计数法：</strong></h4><ul><li>无法解决对象之间相互循环应用的问题-&gt;主流java虚拟机没有采用。</li></ul><h4 id="1-2-可达性分析算法"><a href="#1-2-可达性分析算法" class="headerlink" title="1.2.可达性分析算法"></a><strong>1.2.可达性分析算法</strong></h4><ul><li><p><strong>1.2.1.在Java语言中，可作为GC Roots的对象包括下面几种：</strong></p><ul><li><p><strong>虚拟机栈</strong>（栈帧中的本地变量表）中引用的对象。</p></li><li><p><strong>方法区</strong>中<strong>类静态属性引用的对象</strong>。</p></li><li><p><strong>方法区中常量引用的对象</strong>。</p></li><li><p><strong>本地方法栈</strong>中JNI（即一般说<strong>的Native方法</strong>）<strong>引用的对象</strong>。</p><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/bc42eae0-9eeb-4b1c-b9f5-9aba426ed019-746748.jpg" alt="img"></p></li></ul></li></ul><h4 id="1-3-种引用类型"><a href="#1-3-种引用类型" class="headerlink" title="1.3.种引用类型"></a><strong>1.3.种引用类型</strong></h4><ul><li><strong>强引用：</strong><ul><li>就是指在程序代码之中普遍存在的，类似“Object obj=new Object（）”这类的引用，只要强引用还存在，垃圾收集器永远不会回收掉被引用的对象。</li></ul></li><li><strong>软引用：</strong><ul><li>是用来描述一些还有用但并非必需的对象。对于软引用关联着的对象，<strong>在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围之中进行第二次回收。</strong>如果这次回收还没有足够的内存，才会抛出内存溢出异常。在JDK 1.2之后，提供了<strong>SoftReference类</strong>来实现软引用。</li></ul></li><li><strong>弱引用：</strong><ul><li>也是用来描述非必需对象的，但是它的强度比软引用更弱一些，<strong>被弱引用关联的对象只能生存到下一次垃圾收集发生之前</strong>。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。在JDK 1.2之后，提供了<strong>WeakReference类</strong>来实现弱引用。</li></ul></li><li><strong>虚引用：</strong><ul><li>也称为幽灵引用或者幻影引用，它是最弱的一种引用关系。<strong>一个对象是否有虚引用的存在，完全不会对其生存时间构成影响</strong>，<strong>也无法通过虚引用来取得一个对象实例</strong>。为一个对象设置虚引用关联的<strong>唯一目的就是能在这个对象被收集器回收时收到一个系统通知</strong>。在JDK 1.2之后，提供了<strong>PhantomReference类</strong>来实现虚引用。（虚引用必须和引用队列一起使用，它的作用在于<strong>跟踪垃圾回收过程</strong>）</li></ul></li></ul><h4 id="1-4-finalize"><a href="#1-4-finalize" class="headerlink" title="1.4.finalize()"></a><strong>1.4.finalize()</strong></h4><ul><li>如果对象在进行可达性分析后发现没有与GC Roots相连接的引用链，那它将会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行finalize（）方法。当对象没有覆盖finalize（）方法，或者finalize（）方法已经被虚拟机调用过，虚拟机将这两种情况都视为“没有必要执行”。</li><li>如果这个对象被判定为有必要执行finalize（）方法，那么这个对象将会放置在一个叫做F-Queue的队列之中，并在稍后由一个由虚拟机自动建立的、低优先级的Finalizer线程去执行它。</li><li>finalize()可以防止垃圾回收，拯救对象，它的运行代价高昂，不确定性大，无法保证各个对象的调用顺序。finalize（）能做的所有工作，使用try-finally或者其他方式都可以做得更好、更及时，平时不介意用。</li></ul><h4 id="1-5-回收方法区"><a href="#1-5-回收方法区" class="headerlink" title="1.5.回收方法区"></a><strong>1.5.回收方法区</strong></h4><ul><li>多人认为方法区（或者HotSpot虚拟机中的永久代）是没有垃圾收集的，Java虚拟机规范中确实说过可以不要求虚拟机在方法区实现垃圾收集，而且在方法区中进行垃圾收集的“性价比”一般比较低</li><li>永久代的垃圾收集主要回收两部分内容：废弃常量和无用的类</li></ul><h4 id="1-6-垃圾收集算法"><a href="#1-6-垃圾收集算法" class="headerlink" title="1.6.垃圾收集算法"></a><strong>1.6.垃圾收集算法</strong></h4><h5 id="1-6-1-标记-清除算法（Mark-Sweep）"><a href="#1-6-1-标记-清除算法（Mark-Sweep）" class="headerlink" title="1.6.1.标记-清除算法（Mark-Sweep）"></a><strong>1.6.1.标记-清除算法（Mark-Sweep）</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/777e9c29-5854-4833-8a0d-4c866cf52d26-746748.jpg" alt="img"></p><ul><li><strong>标记-清除算法有两个不足的地方：</strong><ul><li><strong>1).效率问题:</strong>标记和清除两个过程的效率都不高；</li><li><strong>2).空间问题：</strong>标记清除之后会产生大量<strong>不连续的内存碎片</strong>，空间碎片太多可能会导致以后在程序运行过程中需要分配较大对象时，无法找到足够的连续内存而不得不提前触发另一次垃圾收集动作</li></ul></li></ul><h5 id="1-6-2-复制算法（Copying）-gt-用于新生代"><a href="#1-6-2-复制算法（Copying）-gt-用于新生代" class="headerlink" title="1.6.2.复制算法（Copying）->用于新生代"></a><strong>1.6.2.复制算法（Copying）-&gt;用于新生代</strong></h5><ul><li><p><strong>解决【标记-清除算法】的效率问题！</strong></p><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/632c4e94-afda-4b00-9c4d-5edebbb0694f-746748.jpg" alt="img"></p></li><li><p>它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。（实际的比例是8：1：1）当这一块的内存用完了，就将还存活着的对象复制到另外一块上面，然后再把已使用过的内存空间一次清理掉。这样使得每次都是对整个半区进行内存回收，内存分配时也就不用考虑内存碎片等复杂情况，只要移动堆顶指针，按顺序分配内存即可，实现简单，运行高效。</p></li><li><p><strong>不足：内存缩减为原来的一般，代价太高！</strong>（主流商用虚拟机用的就是复制算法，比例为8（eden）:1（Survivor1）:1（Survivor2））</p></li></ul><h5 id="1-6-3-标记-整理算法（Mark-Compact）-gt-用于老年代"><a href="#1-6-3-标记-整理算法（Mark-Compact）-gt-用于老年代" class="headerlink" title="1.6.3.标记-整理算法（Mark-Compact）->用于老年代"></a><strong>1.6.3.标记-整理算法（Mark-Compact）-&gt;用于老年代</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/df30fe6c-b36e-452c-a37c-602d681fe51e-746748.jpg" alt="img"></p><ul><li><strong>之前算法的不足：</strong>复制收集算法在对象存活率较高时就要进行较多的复制操作，效率将会变低。更关键的是，如果不想浪费50%的空间，就需要有额外的空间进行分配担保，以应对被使用的内存中所有对象都100%存活的极端情况，所以在老年代一般不能直接选用这种算法。</li><li>过程：标记过程仍然与“标记-清除”算法一样，但后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存</li></ul><h5 id="1-6-4-分代收集算法（Generational-Collection）"><a href="#1-6-4-分代收集算法（Generational-Collection）" class="headerlink" title="1.6.4.分代收集算法（Generational Collection）"></a><strong>1.6.4.分代收集算法（Generational Collection）</strong></h5><ul><li>介绍：一般是把Java堆分为<strong>新生代</strong>和<strong>老年代</strong>，这样就可以根据<strong>各个年代</strong>的特点采用<strong>最适当的收集算法</strong>。在<strong>新生代</strong>中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用<strong>复制算法</strong>，只需要付出少量存活对象的复制成本就可以完成收集。而<strong>老年代</strong>中因为<strong>对象存活率高</strong>、<strong>没有额外空间</strong>对它进行<strong>分配担保</strong>，就必须使用“<strong>标记—清理</strong>”或者“标记—整理”算法来进行回收。</li></ul><h3 id="二-什么时候回收？"><a href="#二-什么时候回收？" class="headerlink" title="二.什么时候回收？"></a><strong>二.什么时候回收？</strong></h3><ul><li><strong>对对象存活判定算法+垃圾回收算法的实现-&gt;注重执行效率（HotSpot）</strong></li></ul><h4 id="2-1-枚举根节点"><a href="#2-1-枚举根节点" class="headerlink" title="2.1.枚举根节点"></a><strong>2.1.枚举根节点</strong></h4><ul><li><strong>实现可达性分析算法的2个难点：</strong><ul><li><strong>1.耗时</strong><ul><li>因为需要对对象引用逐个查找（eg：从GC Roots节点找引用链这个操作为例，可作为GC Roots的节点主要在全局性的引用（例如常量或类静态属性）与执行上下文（例如栈帧中的本地变量表）中，现在很多应用仅仅方法区就有数百兆，如果要逐个检查这里面的引用，那么必然会消耗很多时间。）</li></ul></li><li><strong>2.会出现GC停顿</strong><ul><li>因为这项分析工作必须在一个能确保一致性的快照中进行——这里“一致性”的意思是指在整个分析期间整个执行系统看起来就像被冻结在某个时间点上，不可以出现分析过程中对象引用关系还在不断变化的情况，该点不满足的话分析结果准确性就无法得到保证。这点是导致GC进行时必须停顿所有Java执行线程</li></ul></li></ul></li><li><strong>解决办法：</strong><ul><li><strong>OopMap</strong><ul><li>所以当执行系统停顿下来后，并不需要一个不漏地检查完所有执行上下文和全局的引用位置，在类加载完成的时候，HotSpot就把对象内什么偏移量上是什么类型的数据计算出来，在JIT编译过程中，也会在特定的位置记录下栈和寄存器中哪些位置是引用，放入OopMap中。</li></ul></li></ul></li></ul><h4 id="2-2-安全点"><a href="#2-2-安全点" class="headerlink" title="2.2.安全点"></a><strong>2.2.安全点</strong></h4><ul><li><strong>引入OopMap带来的问题：</strong><ul><li><strong>GC的空间成本变高：</strong><ul><li>引用关系变化，或者说OopMap内容变化的指令非常多，如果为每一条指令都生成对应的OopMap，那将会需要大量的额外空间，这样GC的空间成本将会变得很高。</li></ul></li></ul></li><li><strong>解决办法：</strong><ul><li><strong>引入安全点-&gt;只在特定的位置进行记录。</strong><ul><li>只在“特定的位置”记录了这些信息，这些位置称为安全点。</li><li><strong>如何找到安全点：</strong><ul><li>安全点的选定基本上是以程序“<strong>是否具有让程序长时间执行的特征</strong>”为标准进行选定的——因为每条指令执行的时间都非常短暂，程序不太可能因为指令流长度太长这个原因而过长时间运行，“长时间执行”的最明显特征就是<strong>指令序列复用</strong>，例如<strong>方法调用</strong>、<strong>循环跳转</strong>、<strong>异常跳转</strong>等，所以具有这些功能的指令才会产生Safepoint。</li></ul></li><li>如何在GC发生时让所有线程（这里不包括执行JNI调用的线程）都“跑”到最近的安全点上再停顿下来？<ul><li>抢先式中断（Preemptive Suspension）<ul><li>先式中断不需要线程的执行代码主动去配合，在GC发生时，首先把所有线程全部中断，如果发现有线程中断的地方不在安全点上，就恢复线程，让它“跑”到安全点上。现在几乎<strong>没有</strong>虚拟机实现采用抢先式中断来暂停线程从而响应GC事件。</li></ul></li><li>主动式中断（Voluntary Suspension）<ul><li>主动式中断的思想是当GC需要中断线程的时候，不直接对线程操作，仅仅简单地设置一个标志，各个线程执行时主动去轮询这个标志，发现中断标志为真时就自己中断挂起。</li></ul></li></ul></li></ul></li></ul></li></ul><h4 id="2-3-安全区域"><a href="#2-3-安全区域" class="headerlink" title="2.3.安全区域"></a><strong>2.3.安全区域</strong></h4><ul><li>解决什么问题？<ul><li>解决程序不执行也会触发Safepoint这个问题。（eg：典型的例子就是线程处于Sleep状态或者Blocked状态，这时候线程无法响应JVM的中断请求，“走”到安全的地方去中断挂起，JVM也显然不太可能等待线程重新被分配CPU时间。）</li><li><strong>安全区域</strong>是指在一段代码片段之中，引用关系不会发生变化。在这个区域中的任意地方开始GC都是安全的。</li></ul></li></ul><h3 id="三-如何回收？"><a href="#三-如何回收？" class="headerlink" title="三.如何回收？"></a><strong>三.如何回收？</strong></h3><h4 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a><strong>垃圾回收器</strong></h4><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/22bfdcfc-475e-44d1-a156-bbaf1cc0f93e-746748.jpg" alt="img"></p><h5 id="1-Serial收集器-Serial-old收集器（串行收集器）"><a href="#1-Serial收集器-Serial-old收集器（串行收集器）" class="headerlink" title="1.Serial收集器/Serial old收集器（串行收集器）"></a><strong>1.Serial收集器/Serial old收集器（串行收集器）</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/7521417d-5a7c-4fac-bdef-8bcd6733b59b-746748.jpg" alt="img"></p><ul><li><p><strong>Serial收集器</strong>是虚拟机运行在<strong>Client</strong>模式下的<strong>默认新生代</strong>收集器。</p></li><li><p>Serial收集器<strong>优势</strong>：<strong>简单而高效</strong></p><ul><li>对于限定单个CPU的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集自然可以获得最高的单线程收集效率。在用户的桌面应用场景中，分配给虚拟机管理的内存一般来说不会很大，收集几十兆甚至一两百兆的新生代（仅仅是新生代使用的内存，桌面应用基本上不会再大了），停顿时间完全可以控制在几十毫秒最多一百多毫秒以内，只要不是频繁发生，这点停顿是可以接受的。所以，Serial收集器对于运行在Client模式下的虚拟机来说是一个很好的选择。</li></ul></li><li><p><strong>Serial old收集器</strong>Serial收集器的老年代版本，“<strong>标记-整理</strong>”算法。这个收集器的主要意义也是在于给Client模式下的虚拟机使用。</p></li><li><p><strong>Serial old收集器</strong>如果在Server模式下，那么它主要还有两大用途：<strong>一种用途是在JDK 1.5以及之前的版本中与Parallel Scavenge收集器搭配使用</strong>，另一种用途就是作为<strong>CMS收集器的后备预案</strong>，在并发收集发生<strong>Concurrent Mode Failure</strong>时使用。</p></li></ul><h5 id="2-ParNew收集器"><a href="#2-ParNew收集器" class="headerlink" title="2.ParNew收集器"></a><strong>2.ParNew收集器</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/2b694da1-4f72-4301-aba1-3485d600a99e-746748.jpg" alt="img"></p><ul><li><p><strong>ParNew收集器其实就是Serial收集器的多线程版本。</strong></p></li><li><p>ParNew收集器是许多运行在<strong>Server模式</strong>下的虚拟机中首选的<strong>新生代收集器</strong>，其中有一个与性能无关但很重要的原因是，除了Serial收集器外，<strong>目前只有它能与CMS收集器配合工作</strong>。</p></li></ul><h5 id="3-Parallel-Scavenge收集器-Parallel-Old收集器"><a href="#3-Parallel-Scavenge收集器-Parallel-Old收集器" class="headerlink" title="3.Parallel Scavenge收集器/Parallel Old收集器"></a><strong>3.Parallel Scavenge收集器/Parallel Old收集器</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/1b5f638b-90b5-453e-8063-92cbba81fd7b-746748.jpg" alt="img"></p><ul><li><p><strong>新生代</strong>收集器 <strong>复制算法 并行</strong>的多线程收集器。</p></li><li><p>Parallel Scavenge收集器的目标：<strong>可控制的吞吐量（</strong>吞吐量就是CPU用于运行用户代码的时间与CPU总消耗时间的比值，即吞吐量=运行用户代码时间/（运行用户代码时间+垃圾收集时间）<strong>）。</strong></p></li><li><p>Parallel Scavenge收集器提供了两个参数用于精确控制吞吐量：</p><ul><li>-XX：MaxGCPauseMillis（控制最大垃圾收集停顿时间）</li><li>-XX：GCTimeRatio（设置吞吐量大小）</li></ul></li><li><p><strong>-XX：+UseAdaptiveSizePolicy</strong>（这是一个开关参数，当这个参数打开之后，就不需要手工指定新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX：SurvivorRatio）、晋升老年代对象年龄（-XX：PretenureSizeThreshold）等细节参数了，虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的停顿时间或者最大的吞吐量，这种调节方式称为<strong>GC自适应的调节策略</strong>（GC Ergonomics））</p></li></ul><h5 id="4-CMS收集器"><a href="#4-CMS收集器" class="headerlink" title="4.CMS收集器"></a><strong>4.CMS收集器</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/c8d75e2f-5086-4d9b-97aa-23ba3b827d54-746748.jpg" alt="img"></p><ul><li>CMS（Concurrent Mark Sweep）收集器是一种以<strong>获取最短回收停顿时间</strong>为目标的基于<strong>“标记—清除”算法</strong>的<strong>收集器。</strong></li><li>目前很大一部分的Java应用集中在互联网站或者<strong>B/S系统</strong>的服务端上，这类应用尤其重视服务的<strong>响应速度</strong>，希望<strong>系统停顿时间最短</strong>，以给用户带来较好的体验。CMS收集器就非常符合这类应用的需求。</li><li>收集步骤有4个：<ul><li>初始标记（CMS initial mark）</li><li>并发标记（CMS concurrent mark）</li><li>重新标记（CMS remark）</li><li>并发清除（CMS concurrent sweep）</li></ul></li><li><strong>CMS收集器的缺点：</strong><ul><li>1).CMS收集器对CPU资源非常敏感。(支持并发引起的)。</li><li>2).CMS收集器无法处理浮动垃圾（Floating Garbage），可能出现“Concurrent Mode Failure”失败而导致另一次Full GC的产生。</li><li>3).CMS是一款基于“标记—清除”算法实现的收集器,收集结束时会有大量空间碎片产生。</li></ul></li></ul><h5 id="5-G1收集器（Garbage-First）"><a href="#5-G1收集器（Garbage-First）" class="headerlink" title="5.G1收集器（Garbage-First）"></a><strong>5.G1收集器（</strong>Garbage-First<strong>）</strong></h5><p><img src="/2018/09/13/02.la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/b6b714b8-8a10-4ad2-937b-4b3af411a808-746748.jpg" alt="img"></p><ul><li><strong>优势：</strong><ul><li>1).并行与并发</li><li>2).分代收集</li><li>3).空间整合<ul><li>与CMS的“标记—清理”算法不同，G1从整体来看是基于“标记—整理”算法实现的收集器，从局部（两个Region之间）上来看是基于“复制”算法实现的(不会产生内存空间碎片)。</li></ul></li><li>4).可预测的停顿</li></ul></li><li>收集步骤：<ul><li>初始标记（Initial Marking）</li><li>并发标记（Concurrent Marking）</li><li>最终标记（Final Marking）</li><li>筛选回收（Live Data Counting and Evacuation）</li></ul></li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GC </tag>
+            
+            <tag> JVM </tag>
+            
+            <tag> 性能调优 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>03.理解GC日志</title>
+      <link href="/2018/09/13/03.li-jie-gc-ri-zhi/"/>
+      <url>/2018/09/13/03.li-jie-gc-ri-zhi/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/2018/09/13/03.li-jie-gc-ri-zhi/1569033672704.png" alt="1569033672704"></p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GC </tag>
+            
+            <tag> JVM </tag>
+            
+            <tag> 性能调优 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>05.虚拟机性能监控与与故障处理工具</title>
+      <link href="/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/"/>
+      <url>/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/</url>
+      
+        <content type="html"><![CDATA[<h1 id="05-虚拟机性能监控与与故障处理工具"><a href="#05-虚拟机性能监控与与故障处理工具" class="headerlink" title="05.虚拟机性能监控与与故障处理工具"></a>05.虚拟机性能监控与与故障处理工具</h1><h2 id="一-jps——查看JVM进程的工具"><a href="#一-jps——查看JVM进程的工具" class="headerlink" title="一.jps——查看JVM进程的工具"></a><strong>一.jps——查看JVM进程的工具</strong></h2><ul><li><p><strong>jps -l</strong><br>[app_user_5i5j@nh-nbdir02 ~]$ jps -l19719 org.apache.catalina.startup.Bootstrap31528 sun.tools.jps.Jps5403 com.wiwj.cbs.nbdir.server.Startup</p></li><li><p><strong>jps -v</strong></p><p>[app_user_5i5j@nh-nbdir02 ~]$ jps -v31491 Jps -Dapplication.home=/usr/java/jdk1.8.0_144 -Xms8m19719 Bootstrap -Djava.util.logging.config.file=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Xms2048m -Xmx4096m -Xss2048K -XX:-UseGCOverheadLimit -Denv=PRO -Dapollo.cluster=default -Djdk.tls.ephemeralDHKeySize=2048 -Dignore.endorsed.dirs= -Dcatalina.base=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080 -Dcatalina.home=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080 -Djava.io.tmpdir=/home/app_user_5i5j/webapp/cbs-nbdir-admin-8080/temp5403 Startup -Xms256m -Xmx256m -XX:MaxPermSize=128m -Djava.net.preferIPv4Stack=true -Ddubbo.registry.file=/home/app_user_5i5j/.dubbo/dubbo-registry-nbdir.cache -Denv=PRO -Dapollo.cluster=default</p><ul><li><strong>输出虚拟机进程启动时JVM参数</strong></li></ul></li></ul><h2 id="二-jstat——统计信息的监视工具"><a href="#二-jstat——统计信息的监视工具" class="headerlink" title="二.jstat——统计信息的监视工具"></a><strong>二.jstat——统计信息的监视工具</strong></h2><ul><li><p>jstat -class</p><p><img src="/2018/09/13/05.xu-ni-ji-xing-neng-jian-kong-yu-yu-gu-zhang-chu-li-gong-ju/9cb9c538-aceb-4437-80f7-ac9682081eaa-746748.jpg" alt="img"></p><p>[app_user_5i5j@nh-nbdir02 ~]$ jstat -class 5403Loaded  Bytes  Unloaded  Bytes     Time    12387 22847.2      461   704.7       7.48</p></li><li><p>jstat-gc</p></li><li><p>…..</p></li></ul><h2 id="三-jinfo——查看配置信息"><a href="#三-jinfo——查看配置信息" class="headerlink" title="三.jinfo——查看配置信息"></a><strong>三.jinfo——查看配置信息</strong></h2><ul><li>jinfo {-flag} pid</li></ul><h2 id="四-jmap——获取内存映像工具"><a href="#四-jmap——获取内存映像工具" class="headerlink" title="四.jmap——获取内存映像工具"></a><strong>四.jmap——获取内存映像工具</strong></h2><ul><li>jmap（Memory Map for Java）命令用于生成堆转储快照（一般称为heapdump或<strong>dump</strong>文件）。</li><li>jmap的作用并不仅仅是为了获取dump文件，它还可以查询<strong>finalize执行队列</strong>、<strong>Java堆</strong>和<strong>永久代</strong>的详细信息，如空间使用率、当前用的是哪种收集器等。</li></ul><h2 id="五-jhat——分析jmap生成dump文件（很少用）"><a href="#五-jhat——分析jmap生成dump文件（很少用）" class="headerlink" title="五.jhat——分析jmap生成dump文件（很少用）"></a><strong>五.jhat——分析jmap生成dump文件（很少用）</strong></h2><h2 id="六-jstack——堆栈跟踪工具"><a href="#六-jstack——堆栈跟踪工具" class="headerlink" title="六.jstack——堆栈跟踪工具"></a><strong>六.jstack——堆栈跟踪工具</strong></h2><ul><li>jstack（Stack Trace for Java）命令用于生成虚拟机<strong>当前</strong>时刻的<strong>线程快照</strong>。</li><li>用途：定位线程出现<strong>长时间停顿的原因</strong>，如<strong>线程间死锁</strong>、<strong>死循环</strong>、<strong>请求外部资源</strong>导致的长时间等待等都是导致线程长时间停顿的常见原因。</li></ul><h2 id="七-HSDIS：JIT生成代码反汇编"><a href="#七-HSDIS：JIT生成代码反汇编" class="headerlink" title="七.HSDIS：JIT生成代码反汇编"></a><strong>七.HSDIS：JIT生成代码反汇编</strong></h2><ul><li>HSDIS是一个Sun官方推荐的HotSpot虚拟机JIT编译代码的反汇编插件，它包含在HotSpot虚拟机的源码之中，但没有提供编译后的程序。在Project Kenai的网站[1]也可以下载到单独的源码。它的作用是让HotSpot的-XX：+PrintAssembly指令调用它来把动态生成的本地代码还原为汇编代码输出，同时还生成了大量非常有价值的注释，这样我们就可以通过输出的代码来分析问题。</li></ul><h2 id="八-可视化工具-JConsole"><a href="#八-可视化工具-JConsole" class="headerlink" title="八.可视化工具-JConsole"></a><strong>八.可视化工具-JConsole</strong></h2><h2 id="九-可视化工具-JVisualVM"><a href="#九-可视化工具-JVisualVM" class="headerlink" title="九.可视化工具-JVisualVM"></a><strong>九.可视化工具-JVisualVM</strong></h2><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GC </tag>
+            
+            <tag> JVM </tag>
+            
+            <tag> 性能调优 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1.(总结)垃圾收集器与内存分配策略（GC）</title>
+      <link href="/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/"/>
+      <url>/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/2018/09/13/1.zong-jie-la-ji-shou-ji-qi-yu-nei-cun-fen-pei-ce-lue-gc/1569033753442.png" alt="1569033753442"></p><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GC </tag>
+            
+            <tag> JVM </tag>
+            
+            <tag> 性能调优 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>tomcat调优</title>
+      <link href="/2018/09/13/tomcat-diao-you/"/>
+      <url>/2018/09/13/tomcat-diao-you/</url>
+      
+        <content type="html"><![CDATA[<h1 id="1-Tomcat配置调优"><a href="#1-Tomcat配置调优" class="headerlink" title="1.Tomcat配置调优"></a>1.Tomcat配置调优</h1><h2 id="1-1-减少配置优化"><a href="#1-1-减少配置优化" class="headerlink" title="1.1.减少配置优化"></a>1.1.减少配置优化</h2><ul><li><p>不需要静态资源的情况</p><ul><li><p>案例1：REST应用（微服务）—&gt;&gt;对应相应的Servlet</p></li><li><p>分析：不需要静态资源，Tomcat容器–&gt;&gt;静态和动态</p><ul><li><p><strong>1.静态处理</strong>：DefaultServlet</p><ul><li><p>优化方案：移除conf/web.xml中的org.apache.jasper.servlet.<strong>DefaultServlet</strong></p><p><img src="/2018/09/13/tomcat-diao-you/tos_d7a0e293-6d95-47c0-81c8-22401719b818-746748.jpg" alt="img"></p></li></ul></li><li><p><strong>动态处理</strong>：JspServlet</p><ul><li><p>优化方案：移除conf/web.xml中的org.apache.jasper.servlet.<strong>JspServlet</strong></p><p><img src="/2018/09/13/tomcat-diao-you/tos_5b1bf740-4206-4a65-a911-462e185ba5ed-746748.jpg" alt="img"></p></li></ul></li><li><p><strong>2.移除welcome-file-list</strong></p><p><img src="/2018/09/13/tomcat-diao-you/tos_f7a9f3df-e6b8-4b91-a8f3-773bae588ce8-746748.jpg" alt="img"></p></li><li><p>如果程序是EST JSON Content-Type或者MIME Type：application/json</p></li><li><p><strong>移除session设置</strong></p><ul><li>对于微服务/REST应用，不需要Session。（因为不需要服务器保存用户状态）</li><li>Session通过jsessionid进行用户跟踪，HTTP无状态，需要一个ID与当前用户回话联系。</li><li>SpringSession HttpSession jessionId作为Redis的key实现多个机器登录，用户会话不丢失。</li><li>Session存储方式：Cookie，URL重写，SSL证书。</li></ul></li><li><p><strong>移除valve（valve类似于filter）</strong></p><ul><li><p>在server.xml中移除AccessLogvalve，可以通过Nginx的Access Log替代，valve实现都需要消耗Java应用的计算时间。</p><p><img src="/2018/09/13/tomcat-diao-you/tos_5bfa2e51-4790-4e58-bfaa-f5357b52bc28-746748.jpg" alt="img"></p></li></ul></li></ul></li></ul></li><li><p>需要加载动态资源（Jsp）</p></li></ul><h2 id="1-2-配置调整"><a href="#1-2-配置调整" class="headerlink" title="1.2.配置调整"></a>1.2.配置调整</h2><ul><li><p><strong>闭自动重载</strong></p><p><img src="/2018/09/13/tomcat-diao-you/tos_101fe929-cb5d-4ebd-9f13-56e3f5545574-746748.jpg" alt="img"></p></li><li><p><strong>修改线程池数量</strong></p><p><img src="/2018/09/13/tomcat-diao-you/tos_515a1191-2c4c-4fce-a7a8-de83239befc0-746748.jpg" alt="img"></p><ul><li>通过server.xml调整</li><li>通过JMX来调整</li></ul></li></ul><h2 id="1-3-预编译优化"><a href="#1-3-预编译优化" class="headerlink" title="1.3.预编译优化"></a>1.3.预编译优化</h2><ul><li>jsp</li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> 服务器 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 性能调优 </tag>
+            
+            <tag> 服务器 </tag>
+            
+            <tag> tomcat </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>模板模式进行cbs.deal到ebs数据迁移的总结和应用</title>
       <link href="/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/"/>
       <url>/2018/07/16/cai-yong-mo-ban-mo-shi-jin-xing-cbs-dao-ebs-shu-ju-qian-yi-de-zong-jie-he-ying-yong/</url>
